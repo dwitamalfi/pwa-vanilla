@@ -1,15 +1,300 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Presensi 360</title>
-  <link rel="icon" href="/icon/favicon.png">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="/manifest.json">
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Presensi 360</title>
+    <link rel="icon" href="/icon/favicon.png">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+        integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 </head>
-<body>
-  <h1>Hello, PWA!</h1>
-  <script src="/main.js"></script>
+
+<body class="container-fluid">
+  <div class="w-100 d-flex justify-content-start p-2">
+      <img src="/icon/logo.png" />
+  </div>
+    <form id="myForm" class="p-2" onsubmit="return validateForm(event)">
+        <input type="hidden" name="latitude" id="latitude">
+        <input type="hidden" name="longitude" id="longitude">
+        <div class="mb-3">
+            <h1 class="text-center text-white">Selamat Datang di Portal Digital Presensi</h1>
+        </div>
+        <div class="mb-3 ">
+            <div id="map"></div>
+            <div class="text-center">
+                <div class="spinner-border mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+
+                <p class="loading-text loading-message mb-5">Loading Mendapatkan lokasi anda...</p>
+                <p class="loading-text d-none mb-5">Jangan lupa nyalakan GPS nya ya :)</p>
+                <p class="loading-text d-none mb-5">Tunggu hingga lokasi akurat</p>
+            </div>
+        </div>
+        <!-- <button type="button" class="btn btn-primary w-100 mb-3" onclick="findLokasi()">Dapatkan Lokasi</button> -->
+
+        <div class="mb-3">
+            <label for="name" class="form-label text-white">Name <span class="text-danger">*</span></label>
+            <select name="name" class="form-select" id="name" required>
+                <option value="">Select...</option>
+                <option value="Afif (MSIB)">Afif (MSIB)</option>
+                <option value="Agil">Agil</option>
+                <option value="Agus">Agus</option>
+                <option value="Aji">Aji</option>
+                <option value="Alfi">Alfi</option>
+                <option value="Alfis">Alfis</option>
+                <option value="Anam">Anam</option>
+                <option value="Bima (MSIB)">Bima (MSIB)</option>
+                <option value="Bintang">Bintang</option>
+                <option value="Bintang As Sukendra (MSIB)">Bintang As (MSIB)</option>
+                <option value="Devan (MSIB)">Devan (MSIB)</option>
+                <option value="Dicky (MSIB)">Dicky(MSIB)</option>
+                <option value="Dilla">Dilla</option>
+                <option value="Diva">Diva</option>
+                <option value="Donny">Donny</option>
+                <option value="Galuh (MSIB)">Galuh (MSIB)</option>
+                <option value="Gloria (MSIB)">Gloria (MSIB)</option>
+                <option value="Habib">Habib</option>
+                <option value="Iman (MSIB)">Iman (MSIB)</option>
+                <option value="Karin">Karin</option>
+                <option value="Lubis">Lubis</option>
+                <option value="Maria (MSIB)">Maria (MSIB)</option>
+                <option value="Muhammad (MSIB)">Muhammad (MSIB)</option>
+                <option value="Muti (MSIB)">Muti (MSIB)</option>
+                <option value="Ridwan">Ridwan</option>
+                <option value="Riska W (MSIB)">Riska W (MSIB)</option>
+                <option value="Rizka Dwita K">Rizka Dwita K</option>
+                <option value="Rizki Dwi (MSIB)">Rizky Dwi (MSIB)</option>
+                <option value="Rizky Haksono (MSIB)">Rizky Haksono (MSIB)</option>
+                <option value="Rizky Wahyu">Rizky Wahyu</option>
+                <option value="Sinta">Sinta</option>
+                <option value="Tiani">Tiani</option>
+                <option value="Umam">Umam</option>
+                <option value="Widya">Widya</option>
+                <option value="Yusron (MSIB)">Yusron (MSIB)</option>
+                <option value="Zandy (MSIB)">Zandy (MSIB)</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label text-white">Keterangan <span
+                    style="font-size: 12px;">(Opsional)</span></label>
+            <textarea name="description" id="description" class="form-control" rows="4"></textarea>
+        </div>
+        <button type="submit" class="w-100 submit-inovasi">Submit</button>
+    </form>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <script>
+        // Inisialisasi Select2
+        $("#name").select2({
+            theme: "bootstrap-5",
+            placeholder: "Select a name",
+            allowClear: true
+        });
+        let $messages = $('.loading-text');
+        let countLoadingText = $messages.length;
+        let currentMessage = 1;
+        let interval;
+
+        const loadingMessage = () => {
+            interval = setInterval(() => {
+                $messages.eq(currentMessage-1).removeClass('loading-message');
+                $messages.eq(currentMessage-1).addClass('d-none');
+
+                // Add 'loading-message' to current message
+                $messages.eq(currentMessage).addClass('loading-message');
+                $messages.eq(currentMessage).removeClass('d-none');
+
+                // Remove 'temp-class' after 3 seconds
+                setTimeout(() => {
+                    $messages.eq(currentMessage).removeClass('loading-message');
+                    $messages.eq(currentMessage).addClass('d-none');
+
+                }, 4000);
+
+                // Move to the next message
+                currentMessage = (currentMessage + 1) % countLoadingText;
+            }, 5000); // Adjust interval duration as needed
+        };
+
+        loadingMessage();
+
+        const getLoc = () => {
+            return new Promise((resolve, reject) => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const lokasi = [position.coords.latitude, position.coords.longitude];
+                            resolve(lokasi);
+                        },
+                        (error) => {
+                            reject(error);
+                        }
+                    );
+                } else {
+                    reject(new Error("Geolocation is not supported by this browser."));
+                }
+            });
+        };
+
+        const findLokasi = () => {
+            getLoc().then((koordinat) => {
+                $('#map').css('display', 'block')
+
+                const koordinatKantorMalang = [-7.976999, 112.598374];
+                const koordinatKantorJogja = [-7.809533185330345, 110.39094594783981];
+                const map = L.map('map').setView(koordinatKantorMalang, 50);
+                const homeIcon = L.icon({
+                    iconUrl: 'https://cdn-icons-png.freepik.com/256/10263/10263239.png',
+                    iconSize: [30, 30],
+                    shadowSize: [10, 0],
+                    iconAnchor: [15, 30],
+                    popupAnchor: [0, -30]
+                });
+
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                }).addTo(map);
+                L.marker(koordinatKantorMalang, {
+                    icon: homeIcon
+                }).bindPopup("Kantor Malang").openPopup().addTo(map);
+                L.marker(koordinatKantorJogja, {
+                    icon: homeIcon
+                }).bindPopup("Kantor Jogja").openPopup().addTo(map);
+                L.circle(koordinatKantorMalang, {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5,
+                    radius: 15
+                }).bindPopup("Radius Kantor").addTo(map);
+                L.circle(koordinatKantorJogja, {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5,
+                    radius: 15
+                }).bindPopup("Radius Kantor").addTo(map);
+
+                var yourMarker = L.marker(koordinat).bindPopup("Lokasi anda").openPopup().addTo(map);
+                map.setView(koordinat, 50);
+                document.getElementById("latitude").value = koordinat[0];
+                document.getElementById("longitude").value = koordinat[1];
+                $('.spinner-border,.loading-text').addClass('d-none')
+                clearInterval(interval);
+
+
+            }).catch((error) => {
+                console.error("Error getting location:", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Permission Denied',
+                        text: 'Perizinan ditolak / GPS mati. silahkan aktifkan perizinan perangkat atau GPS guna melanjutkan presensi'
+                    });
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Position Unavailable',
+                        text: 'Lokasi tidak ditemukan. Silahkan periksa kembali perangkat anda.'
+                    });
+                } else if (error.code === error.TIMEOUT) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Timeout',
+                        text: 'Waktu permintaan terlalu lama. Silahkan restart kembali browser anda.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Unknown Error',
+                        text: 'Ada error, tapi gatau di mana. heheh'
+                    });
+                }
+            });
+        }
+
+        function submitSuccess(response) {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Presensi berhasil terkirim!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                Swal.close(); // Tutup SweetAlert2 setelah alert muncul
+                location.href =
+                    "https://docs.google.com/spreadsheets/d/1SKizWJkSsu5diUc9Pw8b7wjSezq1O9EyCbWSAqvBehc/edit#gid=372781044"
+            });
+        }
+
+        function submitForm() {
+
+            const latitude = document.getElementById("latitude").value;
+            const longitude = document.getElementById("longitude").value;
+
+            if (latitude && longitude) {
+                Swal.fire({
+                    title: 'Loading',
+                    html: 'Mengirim Presensi',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                 google.script.run.withSuccessHandler(submitSuccess).processForm(document.forms[0]);
+            } else {
+                // Jika geolocation tidak tersedia, tampilkan pesan kesalahan
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Data geolokasi tidak tersedia. Silakan dapatkan lokasi Anda terlebih dahulu.',
+                });
+            }
+        }
+
+        function validateForm(event) {
+            const name = document.getElementById("name").value;
+            if (!name) {
+                event.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Pilih nama sebelum submit presensi.',
+                });
+                return false;
+            }
+            submitForm();
+            return false;
+        }
+
+        const wm = document.getElementById('warning');
+        if (wm) {
+            wm.remove();
+        }
+        findLokasi();
+    </script>
 </body>
+
 </html>

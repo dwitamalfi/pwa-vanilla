@@ -1,0 +1,49 @@
+body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    font-optical-sizing: auto;
+}
+#map {
+    height: 200px;
+    width: 100%;
+    display: none;
+}
+
+.warning-bar {
+    visibility: hidden;
+}
+
+.container-fluid {
+    background-color: #17254e;
+}
+
+.submit-inovasi {
+    background-color: #f04923;
+    color: #fff;
+    border-radius: 10px;
+    height: 40px;
+}
+
+.loading-message {
+    overflow: hidden;
+    white-space: nowrap;
+    /* Keeps the content on a single line */
+    margin: 0 auto;
+    /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .15em;
+    /* Adjust as needed */
+    animation:
+        typing 2.5s steps(40, end)
+}
+
+/* The typing effect */
+@keyframes typing {
+    from {
+        width: 0
+    }
+
+    to {
+        width: 100%
+    }
+}
+
+/* The typewriter cursor effect */
