@@ -253,7 +253,9 @@
 
             const latitude = document.getElementById("latitude").value;
             const longitude = document.getElementById("longitude").value;
-
+            const form = document.getElementById('myForm');
+            const formData = new FormData(form);
+            const jsonData = JSON.stringify(Object.fromEntries(formData));
             if (latitude && longitude) {
                 Swal.fire({
                     title: 'Loading',
@@ -263,7 +265,26 @@
                         Swal.showLoading();
                     }
                 });
-                 google.script.run.withSuccessHandler(submitSuccess).processForm(document.forms[0]);
+                //  google.script.run.withSuccessHandler(submitSuccess).processForm(document.forms[0]);
+                
+                fetch('https://script.google.com/macros/s/AKfycbzLdpp7CKVX74nv01YWRvC6o1jYQ4lk6L60ridI9FrczT_y04HQA4XnzmFKFpKpsaIcgQ/exec', {
+                    // redirect: "follow",
+                    method: 'POST',
+                    body: jsonData,
+                    headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                    }
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Form submitted successfully');
+                    document.getElementById('myForm').reset();
+                    window.location.replace("https://docs.google.com/spreadsheets/d/1BsUqXlaHLr8gDN_SrABeGH76N-8pL3hk1wctEgkjeus/edit?gid=372781044#gid=372781044")
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Form submission failed dari catch api');
+                });
             } else {
                 // Jika geolocation tidak tersedia, tampilkan pesan kesalahan
                 Swal.fire({
