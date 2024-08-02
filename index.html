@@ -244,8 +244,9 @@
                 confirmButtonText: 'OK'
             }).then(() => {
                 Swal.close(); // Tutup SweetAlert2 setelah alert muncul
-                location.href =
-                    "https://docs.google.com/spreadsheets/d/1SKizWJkSsu5diUc9Pw8b7wjSezq1O9EyCbWSAqvBehc/edit#gid=372781044"
+                location.href ="https://docs.google.com/spreadsheets/d/1BsUqXlaHLr8gDN_SrABeGH76N-8pL3hk1wctEgkjeus/edit?gid=372781044#gid=372781044"
+                    // "https://docs.google.com/spreadsheets/d/1SKizWJkSsu5diUc9Pw8b7wjSezq1O9EyCbWSAqvBehc/edit#gid=372781044"
+                    
             });
         }
 
@@ -277,9 +278,7 @@
                 })
                 .then(response => response.text())
                 .then(data => {
-                    alert('Form submitted successfully');
-                    document.getElementById('myForm').reset();
-                    window.location.replace("https://docs.google.com/spreadsheets/d/1BsUqXlaHLr8gDN_SrABeGH76N-8pL3hk1wctEgkjeus/edit?gid=372781044#gid=372781044")
+                   submitSuccess(data);
                 })
                 .catch(error => {
                     console.error('Error:', error);
